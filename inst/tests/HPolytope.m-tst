@@ -1,0 +1,83 @@
+## Copyright (C) 2026 Vissarion Fisikopoulos
+##
+## This file is part of the ovolesti package for GNU Octave.
+##
+## This program is free software; you can redistribute it and/or modify it under
+## the terms of the GNU General Public License as published by the Free Software
+## Foundation; either version 3 of the License, or (at your option) any later
+## version.
+##
+## This program is distributed in the hope that it will be useful, but WITHOUT
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+## FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+## details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, see <http://www.gnu.org/licenses/>.
+##
+## Tests for the HPolytope class.
+
+################################################################################
+##                        ** Constructor tests **                              ##
+################################################################################
+
+## Basic construction
+%!test
+%! A = [1 0; -1 0; 0 1; 0 -1];
+%! b = [1; 1; 1; 1];
+%! P = HPolytope (A, b);
+%! assert_equal (P.A, A);
+%! assert_equal (P.b, b);
+
+## Scalar inequality (1 constraint, 1 dimension)
+%!test
+%! P = HPolytope ([1], [0]);
+%! assert_equal (P.A, [1]);
+%! assert_equal (P.b, [0]);
+
+## b coerced from row to column
+%!test
+%! P = HPolytope ([1 0; 0 1], [1, 1]);
+%! assert_equal (P.b, [1; 1]);
+
+## --- input validation ---
+
+%!error<HPolytope: exactly two arguments> HPolytope ()
+%!error<HPolytope: exactly two arguments> HPolytope (1)
+%!error<HPolytope: A must be a numeric matrix.> HPolytope ("a", [1; 1])
+%!error<HPolytope: b must be a non-empty numeric vector.> HPolytope ([1 0; 0 1], "b")
+%!error<HPolytope: A must be non-empty.> HPolytope ([], [])
+%!error<HPolytope: b must have the same number of rows as A.> ...
+%!  HPolytope ([1 0; 0 1], [1; 2; 3])
+%!error<HPolytope: A must not contain NaN or Inf.> HPolytope ([1 NaN], [1])
+%!error<HPolytope: A must not contain NaN or Inf.> HPolytope ([1 Inf], [1])
+%!error<HPolytope: b must not contain NaN or Inf.> HPolytope ([1; 1], [NaN])
+
+################################################################################
+##                    ** sample / volume method tests **                       ##
+################################################################################
+
+## These require a working oct-file build.  They are skipped (test fails
+## gracefully) when the oct-file is not available, e.g. before 'make' has been
+## run or when the volesti submodule hasn't been fetched.
+
+%!test
+%! if (! exist ("__volesti_HPolytope__", "file"))
+%!   return;
+%! endif
+%! A = [1 0; -1 0; 0 1; 0 -1];
+%! b = [1; 1; 1; 1];
+%! P = HPolytope (A, b);
+%! pts = sample (P, 10, 5, [0; 0]);
+%! assert_equal (size (pts), [2, 5]);
+
+%!test
+%! if (! exist ("__volesti_HPolytope__", "file"))
+%!   return;
+%! endif
+%! A = [1 0; -1 0; 0 1; 0 -1];
+%! b = [1; 1; 1; 1];
+%! P = HPolytope (A, b);
+%! vol = volume (P, 10, 1.0);
+%! assert_equal (size (vol), [1, 1]);
+%! assert (vol > 0);

@@ -1,0 +1,6 @@
+# Fetched by tools/fetch_deps.sh — never committed
+src/volesti/
+
+# Build artifacts
+src/*.oct
+src/*.o

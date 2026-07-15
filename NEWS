@@ -1,0 +1,7 @@
+Summary of important user-visible changes for ovolesti.
+
+ovolesti 0.1.0 (2026-07-15)
+============================
+
+  ** Initial development release.  HPolytope class with uniform sampling
+     and volume computation.  Package skeleton; API may change.

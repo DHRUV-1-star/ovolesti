@@ -1,0 +1,13 @@
+Name: ovolesti
+Version: 0.1.0
+Date: 2026-07-15
+Author: Vissarion Fisikopoulos <vissarion@users.noreply.github.com>
+Maintainer: Vissarion Fisikopoulos <vissarion@users.noreply.github.com>
+Title: Octave binding for volesti
+Description: High-dimensional sampling and volume computation for convex
+ polytopes.  Provides classdef wrappers (HPolytope, VPolytope, Zonotope,
+ Spectahedron) around the volesti C++ library, with oct-file bindings for
+ uniform sampling and volume estimation.
+Depends: octave (>= 9.1)
+License: GPLv3+
+Url: https://github.com/GeomScale/ovolesti

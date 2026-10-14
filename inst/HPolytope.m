@@ -113,8 +113,8 @@ classdef HPolytope
     ## @var{P}.  The random walk takes @var{walk_len} steps between each sample.
     ##
     ## @var{starting_point} is a d × 1 interior point of the polytope.  If
-    ## omitted or empty, the Chebyshev center is computed automatically (requires
-    ## LP-solve support in the underlying C++ library).
+    ## omitted or empty, the Chebyshev center (the center of the largest
+    ## inscribed ball) is computed automatically by an interior-point method.
     ##
     ## @var{seed} is an optional integer seed for the random number generator.
     ##

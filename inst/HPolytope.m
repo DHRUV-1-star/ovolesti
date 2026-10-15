@@ -225,17 +225,25 @@ classdef HPolytope
       if (! isnumeric (x) || ! ismatrix (x) || isempty (x))
         error ("HPolytope.is_in: X must be a non-empty numeric vector or matrix.");
       endif
+      if (! isreal (x))
+        error ("HPolytope.is_in: X must be real.");
+      endif
       if (any (isnan (x(:))) || any (isinf (x(:))))
         error ("HPolytope.is_in: X must not contain NaN or Inf.");
       endif
 
       d = columns (this.A);
 
-      if (d == 1)
-        x = x(:).';
-      elseif (rows (x) != d)
-        if (isvector (x) && length (x) == d)
-          x = x(:);
+      if (rows (x) != d)
+        if (isvector (x))
+          if (d == 1)
+            x = x.';
+          elseif (length (x) == d)
+            x = x(:);
+          else
+            error ("HPolytope.is_in: dimension of X (%d) does not match polytope dimension (%d).", ...
+                   rows (x), d);
+          endif
         else
           error ("HPolytope.is_in: dimension of X (%d) does not match polytope dimension (%d).", ...
                  rows (x), d);
@@ -247,6 +255,9 @@ classdef HPolytope
       endif
       if (! isnumeric (tol) || ! isscalar (tol) || tol < 0)
         error ("HPolytope.is_in: TOL must be a non-negative numeric scalar.");
+      endif
+      if (! isreal (tol))
+        error ("HPolytope.is_in: TOL must be a real scalar.");
       endif
       if (isnan (tol) || isinf (tol))
         error ("HPolytope.is_in: TOL must not be NaN or Inf.");

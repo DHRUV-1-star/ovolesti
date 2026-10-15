@@ -235,6 +235,11 @@ do_volume (const octave_value_list &args)
 static octave_value_list
 do_is_in (const octave_value_list &args)
 {
+  if (!args(3).isreal ())
+    error ("__volesti_HPolytope__: X must be real.");
+  if (!args(4).isreal ())
+    error ("__volesti_HPolytope__: TOL must be real.");
+
   // --- unpack arguments ---
   Matrix A_oct = args(1).matrix_value ();
   Matrix b_oct = args(2).matrix_value ();
